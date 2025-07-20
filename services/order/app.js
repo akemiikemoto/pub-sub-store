@@ -23,7 +23,6 @@ async function processMessage(msg) {
                 "subject": "Pedido Aprovado",
                 "text": `${orderData.name}, seu pedido de disco de vinil acaba de ser aprovado, e esta sendo preparado para entrega!`,
             })
-
             await (await RabbitMQService.getInstance()).send('shipping', orderData)
             console.log(`✔ PEDIDO APROVADO`)
         } else {
@@ -39,7 +38,7 @@ async function processMessage(msg) {
         console.log(`X ERROR TO PROCESS: ${error.response}`)
     }
 }
-
+ 
 async function consume() {
     console.log(`INSCRITO COM SUCESSO NA FILA: ${process.env.RABBITMQ_QUEUE_NAME}`)
     await (await RabbitMQService.getInstance()).consume(process.env.RABBITMQ_QUEUE_NAME, (msg) => {processMessage(msg)})
